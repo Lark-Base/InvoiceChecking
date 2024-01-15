@@ -263,9 +263,9 @@ const reloadData = async() =>{
 }
 
 const submitData = async () => {
-  if(input.value == null){
+  if(input.value == ''){
     codePrompt()
-  }else if(fpdmContent.value != null &&fphmContent.value != null && kprqContent.value != null && xymContent.value != null && bhsjeContent.value != null && yzContent.value != null && zfContent.value != null && chContent.value != null ){
+  }else if(fpdmContent.value != '' &&fphmContent.value != '' && kprqContent.value != '' && xymContent.value != '' && bhsjeContent.value != '' && yzContent.value != '' && zfContent.value != '' && chContent.value != '' ){
     able.value = true
     const table = await bitable.base.getTableById(selection.value.tableId)
     const codeField = await table.getField(codeFieldId.value);
