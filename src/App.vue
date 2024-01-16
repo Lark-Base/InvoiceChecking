@@ -1,10 +1,36 @@
 <template>
   <div class = "center">
-    <el-link href="https://dac57ho49r5.feishu.cn/docx/MG5KdjT5lo5fTOxLoNBcRIFTnYc" target="_blank">{{ $t('form.appCode') }}</el-link>
-    <el-link href="https://bytedance.larkoffice.com/docx/WXtGdRmOioeH9VxlfCtc1Y41nKe" target="_blank">{{ $t('form.feishuDocument') }}</el-link>
+
+    <el-link href="https://dac57ho49r5.feishu.cn/docx/MG5KdjT5lo5fTOxLoNBcRIFTnYc" target="_blank"><el-text tag="b">{{ $t('form.appCode') }}</el-text></el-link>
+    
+    <el-text>{{ $t('form.feishuDocument') }}</el-text>
+    
+    <el-link href="https://bytedance.larkoffice.com/docx/WXtGdRmOioeH9VxlfCtc1Y41nKe" target="_blank"><el-text tag="b">{{ $t('form.plugIn') }}</el-text></el-link>
+    
+    <el-text style="margin-top: 10px;">{{ $t('form.defaultcode') }}</el-text>
+    
+    <el-skeleton style="display: flex;justify-content: center;" :loading="appcodeLoading" animated>
+      <template #template>
+        <el-skeleton-item style="width: 80%;height: 20px;" />
+      </template>
+      <template #default>
+        <el-text>{{ defaultAppCode }}</el-text>
+      </template>
+    </el-skeleton>
+
+    <el-text>{{ $t('form.remain') }}</el-text>
+
+    <el-skeleton style="display: flex;justify-content: center;" :loading="remainLoading" animated>
+      <template #template>
+        <el-skeleton-item style="width: 15%;height: 20px;" />
+      </template>
+      <template #default>
+        <el-text>{{ remain }}</el-text>
+      </template>
+    </el-skeleton>
 
     <el-input style="margin-top: 5px;" v-model="input" type="password" :placeholder="$t('form.enterAppcode')" show-password/>
-    
+
     <div style="width: 100%;display: flex;flex-direction: row;">
       <el-popover width="200px" placement="top-start" :title="$t(`form.content.unneccessary`)" :width="400" trigger="hover" :content="$t(`form.content.fpdmRemind`)">
         <template #reference>
@@ -12,7 +38,7 @@
         </template>
       </el-popover>
     </div>
-    <el-select style="width: 100%;margin-top: 5px;" v-model="fpdmContent" :placeholder="$t(`form.content.pleaseSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
+    <el-select style="width: 100%;margin-top: 5px;" v-model="fpdmContent" :placeholder="$t(`form.content.textSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
       <el-option v-for="item in fieldList" :key="item.id" :value="item.name" @click = "fpdmRenew(item)"/>
     </el-select>
 
@@ -23,7 +49,7 @@
         </template>
       </el-popover>
     </div>
-    <el-select style="width: 100%;margin-top: 5px;" v-model="fphmContent" :placeholder="$t(`form.content.pleaseSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
+    <el-select style="width: 100%;margin-top: 5px;" v-model="fphmContent" :placeholder="$t(`form.content.textSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
       <el-option v-for="item in fieldList" :key="item.id" :value="item.name" @click = "fphmRenew(item)" />
     </el-select>
     
@@ -34,7 +60,7 @@
         </template>
       </el-popover>
     </div>
-    <el-select style="width: 100%;margin-top: 5px;" v-model="xymContent" :placeholder="$t(`form.content.pleaseSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
+    <el-select style="width: 100%;margin-top: 5px;" v-model="xymContent" :placeholder="$t(`form.content.textSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
       <el-option v-for="item in fieldList" :key="item.id" :value="item.name" @click = "xymRenew(item)"/>
     </el-select>
 
@@ -45,7 +71,7 @@
         </template>
       </el-popover>
     </div>
-    <el-select style="width: 100%;margin-top: 5px;" v-model="kprqContent" :placeholder="$t(`form.content.pleaseSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
+    <el-select style="width: 100%;margin-top: 5px;" v-model="kprqContent" :placeholder="$t(`form.content.dateSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
       <el-option v-for="item in fieldList" :key="item.id" :value="item.name" @click = "kprqRenew(item)"/>
     </el-select>
 
@@ -56,7 +82,7 @@
         </template>
       </el-popover>
     </div>
-    <el-select style="width: 100%;margin-top: 5px;" v-model="bhsjeContent" :placeholder="$t(`form.content.pleaseSelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
+    <el-select style="width: 100%;margin-top: 5px;" v-model="bhsjeContent" :placeholder="$t(`form.content.moneySelect`)" size="large" :no-data-text="$t(`form.content.noField`)">
       <el-option v-for="item in fieldList" :key="item.id" :value="item.name" @click = "bhsjeRenew(item)"/>
     </el-select>
 
@@ -75,29 +101,29 @@
       <el-option v-for="item in fieldList" :key="item.id" :value="item.name" @click = "chRenew(item)"/>
     </el-select>
 
-    <el-button type="success" :disabled = "able" @click="submitData" style="width: 100%;margin-top: 45px;">{{ $t('form.content.submit') }}</el-button>
+    <el-button type="success" :disabled = "able" @click="submitData" style="width: 100%;margin-top: 23px;">{{ $t('form.content.submit') }}</el-button>
   </div>
 </template>
 
 
 <script setup>
-import { ref,onMounted,h } from 'vue';
+import { ref,onMounted,h,watch } from 'vue';
 import { bitable} from '@lark-base-open/js-sdk';
 import  axios  from 'axios';
-import { ElMessage,ElNotification, avatarEmits } from 'element-plus';
+import { ElMessage,ElNotification} from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import useCurrentInstance from "./useCurrentInstance";
 import { useStorage } from '@vueuse/core'
 
 const  {proxy}  = useCurrentInstance();
 const { t } = useI18n();
-const locale = proxy.$message.global.locale
+let locale = 'zh'
 const selection = ref({})
 const records = ref([])
-const pageSize = 5000
+
 let fieldList = []
 let testList = []
-let responseData = []
+
 const fpdmContent = useStorage('fpdmContent','')
 const fphmContent = useStorage('fphmContent','')
 const kprqContent = useStorage('kprqContent','')
@@ -109,6 +135,10 @@ const chContent = useStorage('chContent','')
 
 
 const input = useStorage('appcode','')
+const remain = ref('获取中')
+const defaultAppCode = ref('获取中')
+let appcodeLoading = ref(true)
+let remainLoading = ref(true)
 
 
 const able = ref(false)
@@ -120,6 +150,9 @@ const dateFieldId = useStorage('dateFieldId','')
 const yzFieldId = useStorage('yzFieldId','')
 const zfFieldId = useStorage('zfFieldId','')
 const chFieldId = useStorage('chFieldId','')
+
+const viewId = useStorage('vid','')
+
 
 const fpdmRenew = (item)=>{
   fpdmContent.value = item.name
@@ -179,12 +212,12 @@ const successBox = (e) => {
 const warningBox = (e) => {
   if(locale == 'zh'){
     ElMessage({
-      message: '有'+e+'张发票核验错误',
+      message: '发票号码'+e+'核验错误',
       type: 'warning',
     })
   }else{
     ElMessage({
-      message: e+'invoice verification errors',
+      message: 'Invoice number'+e+'verified to be wrong',
       type: 'warning',
     })
   }
@@ -192,9 +225,9 @@ const warningBox = (e) => {
 
 const errorBox = (e) => {
   if(locale == 'zh'){
-    ElMessage.error('有'+e.errorCount +'张发票获取数据失败('+e.message+')')
+    ElMessage.error('发票号码'+e.num +'获取数据失败('+e.message+')')
   }else{
-    ElMessage.error(e.errorCount +'invoices failed to obtain data('+e.message+')')
+    ElMessage.error('Invoice number'+e.num +'failed to obtain data('+e.message+')')
   }
 }
 
@@ -227,6 +260,12 @@ const codePrompt = () => {
 }
 
 onMounted(async () => {
+  
+  fetchRemain()
+  
+  setTimeout(() => {
+    locale = proxy.$message.global.locale
+  }, 1000);
 
   bitable.base.onSelectionChange(() => {
     reloadData()
@@ -236,11 +275,54 @@ onMounted(async () => {
 
 })
 
+watch(defaultAppCode,()=>{
+  appcodeLoading.value = false
+})
+
+watch(remain,()=>{
+  remainLoading.value = false
+})
+
+const fetchRemain = ()=>{
+  axios.get('https://833zkqa1m6.us.aircode.run/hello')
+    .then((res)=>{
+      remain.value = res.data.result.Result.filter(r=>r.ProductCode == "cmapi00050226")[0].TotalQuota
+      defaultAppCode.value = res.data.message
+    })
+    .catch((err)=>{
+      remain.value = 0
+      defaultAppCode.value = err.data.message
+    })
+}
+
+
 const reloadData = async() =>{
   selection.value = await bitable.base.getSelection();
+  if (viewId.value != selection.value.viewId) {
+    viewId.value = selection.value.viewId
+    codeFieldId.value = ''
+    numFieldId.value = ''
+    checkFieldId.value = ''
+    sumFieldId.value = ''
+    dateFieldId.value = ''
+    yzFieldId.value = ''
+    zfFieldId.value = ''
+    chFieldId.value = ''
+    fpdmContent.value = ''
+    fphmContent.value = ''
+    kprqContent.value = ''
+    xymContent.value = ''
+    bhsjeContent.value = ''
+    yzContent.value = ''
+    zfContent.value = ''
+    chContent.value = ''
+  }
+  
   const table = await bitable.base.getTableById(selection.value.tableId)
   const view = await table.getViewById(selection.value.viewId);
   const fieldListId = await view.getVisibleFieldIdList()
+
+  fieldList = []
   for (let element of fieldListId) {
     let fmeta = await table.getFieldMetaById(element)
     let newEle = {
@@ -249,15 +331,7 @@ const reloadData = async() =>{
     }
     fieldList = fieldList.concat(newEle)
   }
-  let hasMore = true
-  let pageToken = ''
-  let tempRecords = []
-  while (hasMore) {
-    const res = await table.getRecords({ pageToken, pageSize })
-    hasMore = res.hasMore
-    pageToken = res.pageToken
-    tempRecords = tempRecords.concat(res.records)
-  }
+
   records.value = await view.getVisibleRecordIdList()
 
 }
@@ -267,65 +341,96 @@ const submitData = async () => {
     codePrompt()
   }else if(fpdmContent.value != '' &&fphmContent.value != '' && kprqContent.value != '' && xymContent.value != '' && bhsjeContent.value != '' && yzContent.value != '' && zfContent.value != '' && chContent.value != '' ){
     able.value = true
+    
     const table = await bitable.base.getTableById(selection.value.tableId)
     const codeField = await table.getField(codeFieldId.value);
     const numField = await table.getField(numFieldId.value);
     const checkField = await table.getField(checkFieldId.value);
     const sumField = await table.getField(sumFieldId.value);
     const dateField = await table.getField(dateFieldId.value);
+    const yzField = await table.getField(yzFieldId.value);
+    const chField = await table.getField(chFieldId.value);
+    const zfField = await table.getField(zfFieldId.value);
+    
     for (let record of records.value) {
-      let codeCell = await codeField.getCell(record);
-      let codeRes = await codeCell.getValue();
-      let codeVal = ''
-      if(codeRes != null){
-        codeVal = codeRes[0].text
+
+      let yzCell = await yzField.getCell(record);
+      let yzRes = await yzCell.getValue();
+      let yzVal = ''
+      if (yzRes != null) {
+        yzVal = yzRes[0].text
       }
-      let numCell = await numField.getCell(record);
-      let numRes = await numCell.getValue();
-      let numVal = ''
-      if(numRes != null){
-        numVal = numRes[0].text
+
+      let chCell = await chField.getCell(record);
+      let chRes = await chCell.getValue();
+      let chVal = ''
+      if (chRes != null) {
+        chVal = chRes[0].text
       }
-      let checkCell = await checkField.getCell(record);
-      let checkRes = await checkCell.getValue();
-      let checkVal = ''
-      if(checkRes != null){
-        checkVal = checkRes[0].text
+
+      let zfCell = await zfField.getCell(record);
+      let zfRes = await zfCell.getValue();
+      let zfVal = ''
+      if (zfRes != null) {
+        zfVal = zfRes[0].text
       }
-      let sumCell = await sumField.getCell(record);
-      let sumRes = await sumCell.getValue();
-      let sumVal = ''
-      if (sumRes != null) {
-        if (typeof sumRes == 'number') {
-          sumVal = '' + sumRes
-        }else{
-          sumVal = sumRes[0].text.split('').filter(letter => !Number.isNaN(parseInt(letter)) || letter =='.').join('')
+
+      if (yzVal == '' && chVal == '' && zfVal == '') {
+        let codeCell = await codeField.getCell(record);
+        let codeRes = await codeCell.getValue();
+        let codeVal = ''
+        if(codeRes != null){
+          codeVal = codeRes[0].text
         }
-      }
-      let dateCell = await dateField.getCell(record);
-      let dateRes = await dateCell.getValue();
-      let dateVal = ''
-      if(dateRes != null){
-        if(typeof dateRes == 'number'){
-          var date = new Date(dateRes);
-          var Y = date.getFullYear();
-          var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
-          var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
-          dateVal = ''+Y+M+D
-        }else{
-          dateVal = dateRes[0].text.split('').filter(letter => !Number.isNaN(parseInt(letter))).join('')
+        let numCell = await numField.getCell(record);
+        let numRes = await numCell.getValue();
+        let numVal = ''
+        if(numRes != null){
+          numVal = numRes[0].text
         }
+        let checkCell = await checkField.getCell(record);
+        let checkRes = await checkCell.getValue();
+        let checkVal = ''
+        if(checkRes != null){
+          checkVal = checkRes[0].text
+        }
+        let sumCell = await sumField.getCell(record);
+        let sumRes = await sumCell.getValue();
+        let sumVal = ''
+        if (sumRes != null) {
+          if (typeof sumRes == 'number') {
+            sumVal = '' + sumRes
+          }else{
+            sumVal = sumRes[0].text.split('').filter(letter => !Number.isNaN(parseInt(letter)) || letter =='.').join('')
+          }
+        }
+        let dateCell = await dateField.getCell(record);
+        let dateRes = await dateCell.getValue();
+        let dateVal = ''
+        if(dateRes != null){
+          if(typeof dateRes == 'number'){
+            var date = new Date(dateRes);
+            var Y = date.getFullYear();
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+            var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+            dateVal = ''+Y+M+D
+          }else{
+            dateVal = dateRes[0].text.split('').filter(letter => !Number.isNaN(parseInt(letter))).join('')
+          }
+        }
+        let test = {
+          recordId:record,
+          codeVal:codeVal,
+          numVal:numVal,
+          checkVal:checkVal,
+          sumVal:sumVal,
+          dateVal:dateVal
+        }
+        testList = testList.concat(test)
+        
       }
-      let test = {
-        recordId:record,
-        codeVal:codeVal,
-        numVal:numVal,
-        checkVal:checkVal,
-        sumVal:sumVal,
-        dateVal:dateVal
-      }
-      testList = testList.concat(test)
     }
+
     await requestData()
 
   }else{
@@ -335,9 +440,7 @@ const submitData = async () => {
 
 const requestData = async () => {
   const table = await bitable.base.getTableById(selection.value.tableId)
-  let res = []
-  let faultCount = 0
-  let errorCount = 0
+  
   for (let record of testList) {
     await axios({
       method:'post',
@@ -401,8 +504,8 @@ const requestData = async () => {
           break;
         }
       }else if(response.data.data.message == '不一致'){
-          faultCount++
-          warningBox(faultCount)
+          
+          warningBox(record.numVal)
           if(locale == 'zh'){
               message = '不一致'
             }else{
@@ -413,7 +516,7 @@ const requestData = async () => {
       await table.setCellValue(zfFieldId.value, record.recordId, cancellationMark)
       await table.setCellValue(chFieldId.value, record.recordId, hcbz)
     }).catch(async (err) => {
-      errorCount++
+
       let message = ''
       switch (err.message.split('').filter(letter => !Number.isNaN(parseInt(letter))).join('')) {
         case '203': 
@@ -485,9 +588,20 @@ const requestData = async () => {
           }else{
             message = 'Network malfunction, please try again later'
           } 
-        break;     
+        break;
+        default:
+          if(locale == 'zh'){
+            message = '请检查AppCode'     
+          }else{
+            message = 'Failed to obtain data, please check AppCode'
+          } 
       }
-      errorBox({message,errorCount})
+      errorBox({message,
+        num:record.numVal})
+
+      if (message == '请检查AppCode' || message == 'Failed to obtain data, please check AppCode') {
+        message = ''
+      }
 
       await table.setCellValue(yzFieldId.value, record.recordId, message)
     })
